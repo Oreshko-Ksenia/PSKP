@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE Client</title>
+    <style>
+        #notifications {
+            list-style-type: none;
+            padding: 0;
+        }
+        #notifications li {
+            padding: 10px;
+            margin: 5px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Notifications</h1>
+    <ul id="notifications"></ul>
+
+    <script>
+        const eventSource = new EventSource('http://localhost:3000/notifications');
+
+        eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log('Received notification:', data);
+            const notificationItem = document.createElement('li');
+            notificationItem.textContent = data.message;
+            document.getElementById('notifications').appendChild(notificationItem);
+        };
+
+        eventSource.onerror = (error) => {
+            console.error('SSE error:', error);
+        };
+    </script>
+</body>
+</html>

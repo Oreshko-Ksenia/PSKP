@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Static File Server</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js" defer></script>
+</head>
+<body>
+    <h1>Static File Server Test</h1>
+
+    <div class="file-container">
+        <h2>Image</h2>
+        <img src="/image.png" alt="Sample Image">
+    </div>
+
+    <div class="file-container">
+        <h2>Video</h2>
+        <video controls>
+            <source src="/video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="file-container">
+        <h2>Document</h2>
+        <a href="/document.docx">Download DOCX</a>
+    </div>
+
+    <div class="file-container">
+        <h2>Data from JSON</h2>
+        <pre id="jsonData"></pre>
+    </div>
+
+    <div class="file-container">
+        <h2>Data from XML</h2>
+        <pre id="xmlData"></pre>
+    </div>
+
+    <script>
+        fetch('/data.json')
+            .then(response => response.json())
+            .then(data => document.getElementById('jsonData').textContent = JSON.stringify(data, null, 2));
+
+        fetch('/data.xml')
+            .then(response => response.text())
+            .then(data => document.getElementById('xmlData').textContent = data);
+    </script>
+</body>
+</html>
