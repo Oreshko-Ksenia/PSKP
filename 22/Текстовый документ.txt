@@ -1,0 +1,13 @@
+openssl genrsa -out ca.key 2048
+
+openssl req -new -x509 -days 365 -key ca.key -out ca.crt  -subj "/CN=CA-LAB22-OKS"
+
+
+
+openssl genrsa -out resource.key 2048
+
+openssl req -new -key resource.key -out resource.csr -subj "/CN=RS-LAB22-ABC"
+
+
+
+openssl x509 -req -in resource.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out resource.crt -days 365 -extfile resource-ext.conf -extensions v3_req

@@ -1,0 +1,11 @@
+<h2>Редактировать контакт</h2>
+<form id="editForm">
+    <input type="hidden" name="id" value="{{id}}">
+    <label>Имя:</label><br>
+    <input type="text" name="name" value="{{contact.name}}"><br>
+    <label>Телефон:</label><br>
+    <input type="text" name="phone" value="{{contact.phone}}"><br>
+    <button type="submit" class="btn">Изменить</button>
+    <button type="button" class="btn" id="deleteBtn">Удалить</button>
+    <button type="button" class="btn" onclick="navigate('/')">Отказаться</button>
+</form>

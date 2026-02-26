@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task 2</title>
+</head>
+<body>
+    <div>
+        <input type="number" id="num1" value="5">
+        <input type="number" id="num2" value="3">
+        <button onclick="calculateAll()">calculate</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        fetch('/functions.wasm')
+            .then(response => response.arrayBuffer())
+            .then(bytes => WebAssembly.instantiate(bytes))
+            .then(obj => {
+                window.wasmModule = obj.instance;
+                console.log('WebAssembly module loaded');
+            })
+            .catch(err => {
+                console.error('Error loading WASM:', err);
+            });
+
+        function calculateAll() {
+            const num1 = parseInt(document.getElementById('num1').value);
+            const num2 = parseInt(document.getElementById('num2').value);
+            
+            const sumResult = wasmModule.exports.sum(num1, num2);
+            const mulResult = wasmModule.exports.mul(num1, num2);
+            const subResult = wasmModule.exports.sub(num1, num2);
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <div class="result">Sum: ${num1} + ${num2} = ${sumResult}</div>
+                <div class="result">Mul: ${num1} * ${num2} = ${mulResult}</div>
+                <div class="result">Sub: ${num1} - ${num2} = ${subResult}</div>
+            `;
+        }
+    </script>
+</body>
+</html> 

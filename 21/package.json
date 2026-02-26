@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "passport": "^0.7.0",
+    "passport-http": "^0.3.0",
+    "path-to-regexp": "^6.2.0"
+  },
+  "name": "21",
+  "version": "1.0.0",
+  "main": "21-1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

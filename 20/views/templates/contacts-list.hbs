@@ -1,0 +1,7 @@
+<h2>Список контактов</h2>
+{{#each contacts}}
+    <div class="contact-button" onclick="editContact({{@index}})">
+        {{this.name}} - {{this.phone}}
+    </div>
+{{/each}}
+<button class="btn" onclick="navigate('/add')">Добавить</button>

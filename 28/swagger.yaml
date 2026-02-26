@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  title: Телефонный справочник API
+  description: API для управления телефонным справочником
+  version: 1.0.0
+servers:
+  - url: http://localhost:3001
+    description: Локальный сервер
+paths:
+  /TS:
+    get:
+      summary: Получить полный список телефонов
+      responses:
+        '200':
+          description: Список телефонов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PhoneEntry'
+    post:
+      summary: Добавить новый телефон в справочник
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneEntryInput'
+      responses:
+        '201':
+          description: Телефон успешно добавлен
+    put:
+      summary: Обновить существующую запись
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneEntry'
+      responses:
+        '200':
+          description: Запись успешно обновлена
+    delete:
+      summary: Удалить запись по ID
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Идентификатор записи
+      responses:
+        '204':
+          description: Запись успешно удалена
+components:
+  schemas:
+    PhoneEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "3"
+        name:
+          type: string
+          example: "Пользовтель3"
+        phone:
+          type: string
+          example: "+7 999 123-45-67"
+      required:
+        - id
+        - name
+        - phone
+    PhoneEntryInput:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Пользователь3"
+        phone:
+          type: string
+          example: "+7 999 123-45-67"
+      required:
+        - name
+        - phone

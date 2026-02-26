@@ -1,0 +1,13 @@
+{
+  "name": "jsonrpc-server-25-01",
+  "version": "1.0.0",
+  "description": "JSON-RPC server with mathematical operations",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "json-rpc-2.0": "^1.7.0"
+  }
+}
