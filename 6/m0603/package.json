@@ -1,0 +1,24 @@
+{
+  "name": "m0603o.k",
+  "version": "1.0.0",
+  "description": "Модуль для отправки email",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Oreshko-Ksenia/m0603.git"
+  },
+  "keywords": [
+    "email",
+    "nodemailer",
+    "send"
+  ],
+  "author": "ksenia999",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Oreshko-Ksenia/m0603/issues"
+  },
+  "homepage": "https://github.com/Oreshko-Ksenia/m0603#readme"
+}

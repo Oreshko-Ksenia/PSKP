@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <button onclick="fetchPulpits()">Получить список кафедр</button>
+    <div id="pulpitsList"></div>
+
+    <h2>Добавить новую кафедру</h2>
+    <form id="addPulpitForm">
+        <label for="pulpit">Код кафедры:</label>
+        <input type="text" id="pulpit" required><br><br>
+        <label for="pulpitName">Название кафедры:</label>
+        <input type="text" id="pulpitName" required><br><br>
+        <label for="faculty">Факультет:</label>
+        <input type="text" id="faculty" required><br><br>
+        <button type="submit">Добавить</button>
+    </form>
+
+    <h2>Изменить кафедру</h2>
+    <form id="updatePulpitForm">
+        <label for="pulpitToUpdate">Код кафедры:</label>
+        <input type="text" id="pulpitToUpdate" required><br><br>
+        <label for="newPulpitName">Новое название кафедры:</label>
+        <input type="text" id="newPulpitName" required><br><br>
+        <label for="newFaculty">Новый факультет:</label>
+        <input type="text" id="newFaculty" required><br><br>
+        <button type="submit">Обновить</button>
+    </form>
+
+    <h2>Удалить кафедру</h2>
+    <form id="deletePulpitForm">
+        <label for="deletePulpit">Код кафедры:</label>
+        <input type="text" id="deletePulpit" required><br><br>
+        <button type="submit">Удалить</button>
+    </form>
+
+    <div id="errorMessage" style="color: red;"></div>
+
+    <script>
+        function fetchPulpits() {
+            fetch('/api/pulpits')
+                .then(response => response.json())
+                .then(data => {
+                    const pulpitListDiv = document.getElementById('pulpitsList');
+                    pulpitListDiv.innerHTML = '<ul>' + data.map(pulpit => `
+                        <li>${pulpit.PULPIT} - ${pulpit.PULPIT_NAME} - ${pulpit.FACULTY}</li>
+                    `).join('') + '</ul>';
+                })
+                .catch(error => displayError('Ошибка при получении пульпитов: ' + error.message));
+        }
+
+        document.getElementById('addPulpitForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const pulpit = document.getElementById('pulpit').value;
+            const pulpitName = document.getElementById('pulpitName').value;
+            const faculty = document.getElementById('faculty').value;
+
+            const newPulpit = { PULPIT: pulpit, PULPIT_NAME: pulpitName, FACULTY: faculty };
+
+            fetch('/api/pulpits', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newPulpit)
+            })
+            .then(response => response.json())
+            .then(() => {
+                alert('Пульпит добавлен');
+                fetchPulpits(); 
+            })
+            .catch(error => displayError('Ошибка при добавлении пульпита: ' + error.message));
+        });
+
+        document.getElementById('updatePulpitForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const pulpitToUpdate = document.getElementById('pulpitToUpdate').value;
+    const newPulpitName = document.getElementById('newPulpitName').value;
+    const newFaculty = document.getElementById('newFaculty').value;
+
+    const updatedPulpit = { PULPIT_NAME: newPulpitName, FACULTY: newFaculty };
+
+    console.log('Отправка данных на сервер:', updatedPulpit);
+
+    fetch(`/api/pulpits/${pulpitToUpdate}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedPulpit)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Ошибка сети или сервера');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Ответ сервера:', data);
+        alert('Пульпит обновлен');
+        fetchPulpits();
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        displayError('Ошибка при обновлении пульпита: ' + error.message);
+    });
+});
+
+        document.getElementById('deletePulpitForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const pulpit = document.getElementById('deletePulpit').value;
+
+            fetch(`/api/pulpits/${pulpit}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Пульпит удален');
+                    fetchPulpits(); 
+                } else {
+                    displayError('Ошибка при удалении пульпита');
+                }
+            })
+            .catch(error => displayError('Ошибка при удалении пульпита: ' + error.message));
+        });
+
+        function displayError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.innerHTML = message;
+        }
+    </script>
+</body>
+</html>
